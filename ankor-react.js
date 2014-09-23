@@ -689,13 +689,21 @@ define('ankor/Ref',[
 define('ankor/adapters/react/AnkorMixin',[
     '../../Ref'
 ], function (Ref) {
+    function setAnkorProps(newProps) {
+        if (!(newProps.ankorRef instanceof Ref)) {
+            throw Error("Ankor React component must have a property `ankorRef` of type `Ref`");
+        }
+        this.ankorRef = newProps.ankorRef;
+        newProps.ankor = this.ankorRef.getValue();
+    }
+    
     return {
+        componentWillMount: function () {
+            setAnkorProps.call(this, this.props);
+        },
+        
         componentWillReceiveProps: function (newProps) {
-            if (!(this.props.ankorRef instanceof Ref)) {
-                throw Error("Ankor React component must have a property `ankorRef` of type `Ref`");
-            }
-            this.ankorRef = this.props.ankorRef;
-            newProps.ankor = this.ankorRef.getValue();
+            setAnkorProps.call(this, newProps);
         }
     }
 });
