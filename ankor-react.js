@@ -694,17 +694,7 @@ define('ankor/adapters/react/AnkorMixin',[
             if (!(this.props.ankorRef instanceof Ref)) {
                 throw Error("Ankor React component must have a property `ankorRef` of type `Ref`");
             }
-
-            // This is bad for performance
-            var model = this.ankorRef.getValue();
-            Object.keys(model).forEach(function (key) {
-                if (!newProps[key]) {
-                    newProps[key] = model[key];
-                }
-            });
-            
-            // new api
-            // TODO: remove old one (above) before 0.4 release
+            this.ankorRef = this.props.ankorRef;
             newProps.ankor = this.ankorRef.getValue();
         }
     }
